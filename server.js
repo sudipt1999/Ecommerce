@@ -18,6 +18,15 @@ app.get('/', (req, res) => {
     res.json("HOMEPAGE");
 })
 
+/*Route for testing data from user */
+app.post('/', (req, res) => {
+    console.log(req.body);
+    res.send("success");
+})
+
+
+
+
 /* Variable for storing port because when we will deploy we will get a process.env.PORT */
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
