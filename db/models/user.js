@@ -38,9 +38,9 @@ var UserSchema = Schema({
 
 
 /*HASHING THE PASSWORD BEFORE SAVING TO DATABASE */
-UserSchema.pre('save', (next) => {
+UserSchema.pre('save', function (next) {
     var user = this;
-    if (!user.isModified('password')) {
+    if (!(user.isModified('password'))) {
         return next();
     }
     bcrypt.genSalt(10, (err, salt) => {
@@ -63,4 +63,6 @@ UserSchema.methods.comparePassword = (password) => {
     return bcrypt.compareSync(password, this.password)
 }
 
-module.export = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+
+module.exports = User;
