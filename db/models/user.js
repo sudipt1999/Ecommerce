@@ -40,6 +40,7 @@ var UserSchema = Schema({
 /*HASHING THE PASSWORD BEFORE SAVING TO DATABASE */
 UserSchema.pre('save', function (next) {
     var user = this;
+    console.log("THIS USER : ", user);
     if (!(user.isModified('password'))) {
         return next();
     }
@@ -59,7 +60,8 @@ UserSchema.pre('save', function (next) {
 })
 
 /* CUSTOM METHOD FOR COMPARING PASSWORD */
-UserSchema.methods.comparePassword = (password) => {
+UserSchema.methods.comparePassword = function (password) {
+    console.log("inside cmpare password method", password, this.password)
     return bcrypt.compareSync(password, this.password)
 }
 

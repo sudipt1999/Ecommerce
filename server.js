@@ -2,10 +2,17 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const bodyParser = require('body-parser');
-const { mongoose } = require('./db/connectDb');
-const { User } = require('./db/models/user');
 const ejs = require('ejs');
 const engine = require('ejs-mate');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('express-flash');
+const secret = require('./config/secret');
+/* Store session on  mongo db database */
+const mongoStore = require('connect-mongo')(session);
+/* for login autentication passport */
+const passport = require('passport');
+
 
 
 
@@ -19,6 +26,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+/* FOR SENDING ERROR MESSAGES */
+app.use(cookieParser());
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: secret.secretKey,
+    store: new mongoStore({ url: secret.url, autoreconnect: true })
+}));
+app.use(flash());
+/* Passport middleware */
+app.use(passport.initialize());
+app.use(passport.session());
+
 /* TELLING THE EXPRESS THAT WE ARE USING EJS AND WHERE TO FIND IT */
 app.engine('ejs', engine);
 app.set('views', __dirname + '/views');//BY DEFAULT IT RECOGNIZES VIEWS FOLDER 
@@ -34,7 +54,6 @@ app.use(userRoutes);
 
 
 /* Variable for storing port because when we will deploy we will get a process.env.PORT */
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`SERVER STARTED AT PORT ${port}`)
+app.listen(secret.port, () => {
+    console.log(`SERVER STARTED AT PORT ${secret.port}`)
 })

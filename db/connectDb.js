@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
+var secret = require('../config/secret');
 
 
-mongoose.connect("mongodb://localhost:27017/Ecommerce", {
+mongoose.connect(secret.url, {
     useCreateIndex: true,
     useNewUrlParser: true
 }, (err) => {

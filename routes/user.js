@@ -2,7 +2,25 @@
 const router = require('express').Router();
 const mongoose = require('../db/connectDb');
 const User = require('../db/models/user');
+const passport = require('passport');
+const passportConfig = require('../config/passport')
 
+router.get('/signup', (req, res) => {
+    console.log(req.body);
+    res.render('main/signup', {
+        error: req.flash('error')
+    });
+})
+
+router.get('/signin', (req, res) => {
+    console.log(req.body);
+    /* req.user is obtained due to serialaize and deserialze */
+    if (req.user) return res.redirect('/')
+    // res.render('main/signin', {
+    //     message: req.flash('loginMessage')
+    // })
+    res.send("successssssssssssssssssssssssss")
+})
 
 /* ---------ROUTES FOR HANDLING POST REQUEST-------- */
 /*Route for testing data from user */
@@ -17,15 +35,31 @@ router.post('/signup', (req, res) => {
     User.findOne({ email: req.body.email }).then(foundUser => {
         if (foundUser) {
             console.log("already a user with same data");
-            res.send("USER EXIST ALREADY");
+            req.flash('error', 'Account with email address already exists');
+            return res.redirect('/signup');
         }
-        console.log(foundUser);
-        user.save().then(savedUser => {
-            console.log(savedUser);
-            res.send("ADDED USER SUCCESSFULLY");
-        }).catch(err => res.send(err));
+        else {
+            console.log(foundUser);
+            user.save().then(savedUser => {
+                console.log(savedUser);
+                res.send("ADDED USER SUCCESSFULLY");
+            }).catch(err => res.send(err));
+        }
+
     }).catch(err => res.send(err));
 })
+
+
+router.post('/signin', passport.authenticate('local-login', {
+    successRedirect: '/profile',
+    failureRedirect: '/signin',
+    failureFlash: true
+}))
+
+
+
+
+
 
 
 module.exports = router;
