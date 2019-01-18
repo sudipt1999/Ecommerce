@@ -39,6 +39,12 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+/* MIDDLEWARE TO SEND USER OBJECT WITH EVERY RES */
+app.use((req, res, next) => {
+    res.locals.user = req.user;
+    next();
+})
+
 /* TELLING THE EXPRESS THAT WE ARE USING EJS AND WHERE TO FIND IT */
 app.engine('ejs', engine);
 app.set('views', __dirname + '/views');//BY DEFAULT IT RECOGNIZES VIEWS FOLDER 

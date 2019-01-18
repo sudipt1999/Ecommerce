@@ -16,10 +16,33 @@ router.get('/signin', (req, res) => {
     console.log(req.body);
     /* req.user is obtained due to serialaize and deserialze */
     if (req.user) return res.redirect('/')
-    // res.render('main/signin', {
-    //     message: req.flash('loginMessage')
-    // })
-    res.send("successssssssssssssssssssssssss")
+    res.render('main/signin', {
+        message: req.flash('loginMessage')
+    })
+
+})
+
+router.get('/profile', (req, res, next) => {
+    User.findOne({ _id: req.user._id }).then(user => {
+        console.log(user);
+        if (!user) {
+            return res.render('main/signin');
+        } else {
+            res.render('main/profile', {
+                user: user,
+                message: req.flash('loginMessage')
+            })
+        }
+    }).catch(err => {
+        return next(err);
+    })
+
+})
+
+
+router.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/signin');
 })
 
 /* ---------ROUTES FOR HANDLING POST REQUEST-------- */
