@@ -1,5 +1,4 @@
 let mongoose = require('mongoose');
-let Product = require('./Product');
 
 //each Product info will be stored here
 let productStore = mongoose.Schema({

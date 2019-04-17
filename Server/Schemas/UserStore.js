@@ -26,10 +26,6 @@ let storeSchema = mongoose.Schema({
         products    : []
     }
 
-    
-
-
-
 });
 
 
