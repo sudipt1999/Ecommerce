@@ -1,13 +1,16 @@
 let router = require('express').Router();
+let t = require('../Methods/Helpers/helper.js');
 
 
 // signin
 router.post('/signin', (req,res)=>{
-    res.send("signin route");
+    console.log("SIGN IN ROUTE");
+    return t.signIn(req, res);
 });
 
 // signup
 router.post('/signup', (req,res)=>{
+    console.log("SIGN UP ROUTE");
     res.send("signup route");
 });
 
@@ -15,6 +18,7 @@ router.post('/signup', (req,res)=>{
 
 // add to cart
 router.post('/addToCart', (req,res)=>{
+    console.log("ADD TO CART");
     res.send("addToCart route");
 });
 
