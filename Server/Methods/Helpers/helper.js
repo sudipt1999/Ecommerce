@@ -1,6 +1,6 @@
 let helper = {}
 
-//for sign In route
+// for sign In route
 helper.signIn = (req, res)=>{
     console.log("SIGN IN METHOD CALLED INSIDE HELPER");
     res.send("SIGN IN ROUTE INSIDE HELPER");
@@ -12,6 +12,7 @@ helper.singUp = (req,res)=>{
     res.send("SIGN UP ROUTE INSIDE HELPER");
 };
 
+// for testing purpose
 helper.testRoute = (req,res)=>{
     console.log("TESTROUTE METHOD INISDE HELPER");
     res.send("TEST ROUTER FOR USER")
